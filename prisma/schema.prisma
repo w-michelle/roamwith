@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(cuid())
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  hashedPassword String?
+  image          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  accounts Account[]
+  listings Listing[]
+
+  Category  Category[]
+  Cart      Cart[]
+  Card      Card[]
+  Itinerary Itinerary[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  title     String
+  icon      String
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Listing {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  images      Image[]
+  createdAt   DateTime @default(now())
+  category    String
+  user        User?    @relation(fields: [userId], references: [id])
+  userId      String?
+
+  Cart   Cart?   @relation(fields: [cartId], references: [id])
+  cartId String?
+  Card   Card[]
+}
+
+model Image {
+  id        String   @id @default(cuid())
+  imageKey  String
+  url       String
+  createdAt DateTime @default(now())
+  Listing   Listing? @relation(fields: [listingId], references: [id])
+  listingId String?
+}
+
+model Cart {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User?     @relation(fields: [userId], references: [id])
+  createdAt DateTime  @default(now())
+  listings  Listing[]
+}
+
+model Card {
+  id        String  @id @default(cuid())
+  userId    String
+  listingId String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startTime String?
+  endTime   String?
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  Itinerary   Itinerary? @relation(fields: [itineraryId], references: [id], onDelete: Cascade)
+  itineraryId String
+  order       Int?
+
+  Container   Container? @relation(fields: [containerId], references: [id], onDelete: Cascade)
+  containerId String?
+}
+
+model Itinerary {
+  id        String      @id @default(cuid())
+  userId    String
+  title     String?
+  cards     Card[]
+  container Container[]
+  startDate DateTime
+  endDate   DateTime
+  createdAt DateTime    @default(now())
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Container {
+  id String @id @default(cuid())
+
+  cards       Card[]
+  order       Int?
+  Itinerary   Itinerary? @relation(fields: [itineraryId], references: [id], onDelete: Cascade)
+  itineraryId String?
+}
