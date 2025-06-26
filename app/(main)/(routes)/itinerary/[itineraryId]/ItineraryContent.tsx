@@ -2,7 +2,7 @@
 import { SafeItinerary, SafeUser } from "@/types";
 import { formatCalDate, formatSingleDate } from "@/utils/formatDate";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { DateRange, Range } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 
 import { BeatLoader } from "react-spinners";
 import { useModal } from "@/app/hooks/useModal";
+import debounce from "lodash.debounce";
 
 interface ItinProps {
   currentItinerary: SafeItinerary;
@@ -145,7 +146,73 @@ const ItineraryContent: React.FC<ItinProps> = ({
       setIsSelecting(false);
     }
   };
+  const updateDiffContainer = useCallback(
+    debounce((sourceList, destList) => {
+      setUpdating(true);
+      axios
+        .post("/api/cards/updateCardsDiffContainer", {
+          data: {
+            source: sourceList,
+            dest: destList,
+            itinId: id,
+          },
+        })
+        .then(() => {
+          toast.success("Card moved");
+        })
+        .catch(() => {
+          toast.error("Something went wrong");
+        })
+        .finally(() => {
+          setUpdating(false);
+        });
+    }, 500),
+    [id]
+  );
 
+  const updateSameContainer = useCallback(
+    debounce((reorderedCards, sourceListId) => {
+      setUpdating(true);
+      axios
+        .post("/api/cards/updateCardsSameContainer", {
+          data: {
+            itinId: id,
+            reorderedCards: reorderedCards,
+            containerId: sourceListId,
+          },
+        })
+        .then(() => {
+          toast.success("Updated");
+        })
+        .catch(() => {
+          toast.error("Something went wrong");
+        })
+        .finally(() => {
+          setUpdating(false);
+        });
+    }, 500),
+    [id]
+  );
+
+  const updateContainer = useCallback(
+    debounce((items) => {
+      setUpdating(true);
+      axios
+        .post("/api/updateContainer", {
+          data: { dates: dateList, containers: items, itinId: id },
+        })
+        .then(() => {
+          toast.success("Containers updated!");
+        })
+        .catch(() => {
+          toast.error("Something went wrong");
+        })
+        .finally(() => {
+          setUpdating(false);
+        });
+    }, 500),
+    [id, dateList]
+  );
   //when container or card is moved
 
   const onDragEnd = (result: any) => {
@@ -170,17 +237,7 @@ const ItineraryContent: React.FC<ItinProps> = ({
         destination.index
       ).map((item: any, index) => ({ ...item, order: index }));
       setContainersList(items);
-
-      axios
-        .post("/api/updateContainer", {
-          data: { dates: dateList, containers: items, itinId: id },
-        })
-        .then(() => {
-          toast.success("Containers updated!");
-        })
-        .catch(() => {
-          toast.error("Something went wrong");
-        });
+      updateContainer(items);
     }
 
     if (type === "card") {
@@ -215,14 +272,7 @@ const ItineraryContent: React.FC<ItinProps> = ({
         });
         sourceList.cards = reorderedCards;
         setContainersList(newOrderedData);
-
-        axios.post("/api/cards/updateCardsSameContainer", {
-          data: {
-            itinId: id,
-            reorderedCards: reorderedCards,
-            containerId: sourceList.id,
-          },
-        });
+        updateSameContainer(reorderedCards, sourceList.id);
       } else {
         //user move card to another list so if its not the same container
 
@@ -245,21 +295,7 @@ const ItineraryContent: React.FC<ItinProps> = ({
           card.order = idx;
         });
         setContainersList(newOrderedData);
-
-        axios
-          .post("/api/cards/updateCardsDiffContainer", {
-            data: {
-              source: sourceList,
-              dest: destList,
-              itinId: id,
-            },
-          })
-          .then(() => {
-            toast.success("Card moved");
-          })
-          .catch(() => {
-            toast.error("Something went wrong");
-          });
+        updateDiffContainer(sourceList, destList);
       }
     }
   };
@@ -277,6 +313,8 @@ const ItineraryContent: React.FC<ItinProps> = ({
       setIsFocused(false);
     }, 1000);
   };
+
+  //handle title change
   const handleSubmit = () => {
     if (title !== "") {
       axios

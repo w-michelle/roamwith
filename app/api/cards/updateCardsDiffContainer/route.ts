@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
+import { revalidatePath } from "next/cache";
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -26,6 +27,7 @@ export async function POST(request: Request) {
         )
       );
     });
+    revalidatePath("/itinerary/[itineraryId]", "page");
     return NextResponse.json(updates);
   } catch (error) {
     return new NextResponse(`${error}`);

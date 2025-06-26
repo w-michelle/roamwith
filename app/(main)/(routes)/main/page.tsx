@@ -4,12 +4,14 @@ import getCurrentUser from "../../../actions/getCurrentUser";
 
 import Main from "../../_components/Main";
 
+import { redirect } from "next/navigation";
+
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const currentUser = await getCurrentUser();
   if (!currentUser) {
-    return;
+    redirect("/");
   }
 
   const listings = await getAllListing();

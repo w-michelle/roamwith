@@ -11,7 +11,7 @@ interface NavProps {
   currentUser: SafeUser | null;
 }
 
-const Nav: React.FC<NavProps> = async ({ currentUser }) => {
+const Nav: React.FC<NavProps> = ({ currentUser }) => {
   const modal = useModal();
 
   return (
@@ -25,7 +25,7 @@ const Nav: React.FC<NavProps> = async ({ currentUser }) => {
               className="flex text-sm items-center gap-2 bg-black text-white hover:bg-black/80 py-3 px-4 rounded-md hover:cursor-pointer"
               onClick={() => modal.onOpen("login")}
             >
-              Get RoamWith Free
+              Login
             </button>
           </div>
         ) : (

@@ -70,7 +70,6 @@ const LoginModal = () => {
       } else if (callback?.error) {
         toast.error(callback.error);
         setIsLoading(false);
-        console.log("WRONG CREDENTIALS");
       }
     } catch (error) {
       toast.error("Something went wrong");

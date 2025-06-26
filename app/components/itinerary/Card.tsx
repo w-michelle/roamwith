@@ -3,7 +3,7 @@
 import { SafeCard } from "@/types";
 import Image from "next/image";
 import { Draggable } from "@hello-pangea/dnd";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { RiDraggable } from "react-icons/ri";
 import { IoIosMore } from "react-icons/io";
@@ -11,6 +11,8 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { BeatLoader } from "react-spinners";
+import debounce from "lodash.debounce";
+import { TimeSlot } from "./TimeSlot";
 
 interface CardProps {
   card: SafeCard;
@@ -26,20 +28,11 @@ const Card: React.FC<CardProps> = ({ card, index, cards }) => {
 
   const router = useRouter();
   const [timeSlot, setTimeSlot] = useState({
-    stb: card.startTime?.slice(0, 2),
-    ste: card.startTime?.slice(2, 4),
-    etb: card.endTime?.slice(0, 2),
-    ete: card.endTime?.slice(2, 4),
+    stb: card.startTime?.slice(0, 2) || "00",
+    ste: card.startTime?.slice(2, 4) || "00",
+    etb: card.endTime?.slice(0, 2) || "00",
+    ete: card.endTime?.slice(2, 4) || "00",
   });
-
-  useEffect(() => {
-    setTimeSlot({
-      stb: card.startTime?.slice(0, 2),
-      ste: card.startTime?.slice(2, 4),
-      etb: card.endTime?.slice(0, 2),
-      ete: card.endTime?.slice(2, 4),
-    });
-  }, [card.startTime, card.endTime]);
 
   const handleDelete = () => {
     axios
@@ -56,34 +49,33 @@ const Card: React.FC<CardProps> = ({ card, index, cards }) => {
       });
   };
 
-  const handleStartFirst = (slot: string, value: string) => {
-    setTimeSlot((prev) => ({ ...prev, [slot]: value }));
+  //handle time change
+  const handleTimeChange = (slot: string, value: string) => {
+    const updated = { ...timeSlot, [slot]: value };
+    setTimeSlot(updated);
     setIsUpdating(true);
+    debounceTimeUpdate(updated);
   };
-  useEffect(() => {
-    const updateTimeSlot = async () => {
-      try {
-        const response = await axios.post("/api/cards/updateCardTime", {
+
+  const debounceTimeUpdate = useCallback(
+    debounce((updateCardTime) => {
+      axios
+        .post("/api/cards/updateCardTime", {
           data: {
             cardId: card.id,
-            timeSlot: timeSlot,
+            timeSlot: updateCardTime,
             itinId: card.itineraryId,
           },
-        });
-        if (response.status === 200) {
-          setTimeout(() => {
-            setIsUpdating(false);
-          }, 5000);
+        })
+        .then(() => {
+          toast.success("Time Updated!");
           router.refresh();
-        }
-      } catch (error) {
-        toast.error("Error updating time slot");
-        setIsUpdating(false);
-      }
-    };
-
-    updateTimeSlot();
-  }, [timeSlot]);
+        })
+        .catch(() => toast.error("Something went wrong"))
+        .finally(() => setIsUpdating(false));
+    }, 1000),
+    [card.id, card.itineraryId]
+  );
 
   if (isUpdating) {
     return (
@@ -113,101 +105,10 @@ const Card: React.FC<CardProps> = ({ card, index, cards }) => {
             className="flex flex-col sm:flex-row w-full gap-3 sm:gap-6"
           >
             <div className="flex items-center w-[100px]  bg-cusGrayBg/30 border-[1px] border-cusBorder text-cusText px-3 py-2 text-xs rounded-2xl">
-              <select
-                onChange={(e) => handleStartFirst("stb", e.target.value)}
-                value={timeSlot.stb}
-                id="hours"
-                name="hours"
-                className="appearance-none bg-transparent text-cusText border-transparent  focus:outline-none focus:border-transparent focus:ring-0"
-              >
-                <option value="00">00</option>
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <option value="03">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-              </select>
-              <div>:</div>
-              <select
-                onChange={(e) => handleStartFirst("ste", e.target.value)}
-                value={timeSlot.ste}
-                id="minutes"
-                name="minutes"
-                className="appearance-none bg-transparent focus:outline-none border-transparent focus:border-transparent focus:ring-0"
-              >
-                <option value="00">00</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
-                <option value="40">40</option>
-                <option value="50">50</option>
-              </select>
-              <div>-</div>
-              <select
-                onChange={(e) => handleStartFirst("etb", e.target.value)}
-                value={timeSlot.etb}
-                id="hours"
-                name="hours"
-                className="appearance-none bg-transparent text-cusText border-transparent  focus:outline-none focus:ring-0"
-              >
-                <option value="00">00</option>
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <option value="03">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-              </select>
-              <div>:</div>
-              <select
-                onChange={(e) => handleStartFirst("ete", e.target.value)}
-                value={timeSlot.ete}
-                id="minutes"
-                name="minutes"
-                className="appearance-none bg-transparent focus:outline-none border-transparent focus:border-transparent focus:ring-0"
-              >
-                <option value="00">00</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
-                <option value="40">40</option>
-                <option value="50">50</option>
-              </select>
+              <TimeSlot
+                handleTimeChange={handleTimeChange}
+                timeSlot={timeSlot}
+              />
             </div>
             <div className="flex items-center gap-2 justify-between w-full">
               <div className=" relative w-[50px] h-[50px] ml-2">

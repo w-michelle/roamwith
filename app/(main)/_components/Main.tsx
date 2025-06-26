@@ -1,13 +1,14 @@
 "use client";
 
 import { SafeCategory, SafeListing } from "@/types";
-import React from "react";
+import React, { useEffect } from "react";
 import { IoMdAdd } from "react-icons/io";
 
 import ListingModal from "../../components/modals/ListingModal";
 import EmptyState from "../../components/EmptyState";
 import { AllListings } from "../../components/listing/AllListings";
 import { useModal } from "@/app/hooks/useModal";
+import { useRouter } from "next/navigation";
 
 interface MainProp {
   listings: SafeListing[];

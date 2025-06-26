@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
-
+import { MdOutlineArrowBackIos } from "react-icons/md";
 import { MdOutlineModeEdit } from "react-icons/md";
 
 interface ListingClientProps {
@@ -88,6 +88,13 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
   return (
     <div className="max-w-screen-lg mx-auto mt-4 p-3">
+      <button
+        className="text-black flex items-center cursor-pointer"
+        onClick={() => router.back()}
+      >
+        <MdOutlineArrowBackIos size={16} />
+        <span>BACK</span>
+      </button>
       <button
         onClick={() => handleAddToCart()}
         disabled={isLoading}
