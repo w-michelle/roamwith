@@ -22,7 +22,6 @@ const ItinContent: React.FC<ItinContentProp> = ({ item }) => {
       .delete("/api/itinerary/deleteItinerary", { data: { id: itinId } })
       .then(() => {
         toast.success("Itinerary deleted");
-        // router.push("/myItineraries");
         router.refresh();
       })
       .catch(() => {
@@ -35,8 +34,7 @@ const ItinContent: React.FC<ItinContentProp> = ({ item }) => {
   if (deleteUpdate) {
     return (
       <>
-        <div className="z-50 w-full absolute top-0 left-0 h-screen bg-neutral-300 opacity-50 backdrop-blur-sm "></div>
-        <div className="z-50 w-full absolute top-0 left-0 h-screen flex flex-col gap-2 items-center justify-center">
+        <div className="z-50 w-full bg-neutral-100 absolute top-0 left-0 h-screen flex flex-col gap-2 items-center justify-center">
           <p className="">Deleting</p>
           <BeatLoader
             size={10}
@@ -51,7 +49,7 @@ const ItinContent: React.FC<ItinContentProp> = ({ item }) => {
     <>
       <li className="border-b-[1px] hover:bg-cusGreen/20 hover:rounded-md hover:opacity-70 border-neutral-500/70 flex justify-between px-2">
         <Link href={`/itinerary/${item.id}`}>
-          <h3>{item.title || "Itinerary"}</h3>
+          <h3 className="hover:font-extrabold">{item.title || "Itinerary"}</h3>
         </Link>
         <div className="text-sm ml-auto">
           {formatCalDate(new Date(item.createdAt))}

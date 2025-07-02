@@ -1,5 +1,6 @@
 import { SafeListing } from "@/types";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
@@ -32,7 +33,7 @@ const Listing: React.FC<ListingProp> = ({
       >
         <BsThreeDots size={18} />
       </div>
-      <div onClick={() => router.push(`/listing/${listing.id}`)}>
+      <Link href={`/listing/${listing.id}`}>
         <div className="relative w-[150px] h-[150px]">
           <Image
             src={listing.images[0]?.url || "/imgplaceholder.png"}
@@ -45,7 +46,7 @@ const Listing: React.FC<ListingProp> = ({
           <p className="mt-2">{listing.title}</p>
           <p className="text-xs text-neutral-500">{listing.description}</p>
         </div>
-      </div>
+      </Link>
 
       {/* mini action bar */}
       {toggleMini === true && (

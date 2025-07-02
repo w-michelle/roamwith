@@ -149,7 +149,7 @@ const LoginModal = () => {
               <div className="relative ">
                 <button
                   onClick={() => signIn("google", { callbackUrl: "/main" })}
-                  className="py-3 border-2 w-full border-black rounded-lg hover:opacity-80 transition"
+                  className="py-3 border-2 w-full border-black rounded-lg hover:opacity-80 transition cursor-pointer hover:bg-black hover:text-white"
                 >
                   <FcGoogle
                     size={24}

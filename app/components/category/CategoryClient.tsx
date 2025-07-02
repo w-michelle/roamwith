@@ -6,6 +6,7 @@ import { IoIosAdd } from "react-icons/io";
 import CategoryModal, { categoryIcons } from "../modals/CategoryModal";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/app/hooks/useModal";
+import Link from "next/link";
 
 interface CategoryClientProps {
   categories?: SafeCategory[];
@@ -71,10 +72,10 @@ const CategoryClientSuspense: React.FC<CategoryClientProps> = ({
         </div>
         <div className="flex gap-4">
           {categories?.map((category) => (
-            <div
+            <Link
               key={category.id}
+              href={`/category/${category.id}`}
               className="text-center relative"
-              onClick={() => router.push(`/category/${category.id}`)}
             >
               <div className="cursor-pointer rounded-lg p-3 border-[1px] border-black w-[50px] h-[50px] flex items-center justify-center">
                 {category.icon.includes("custom") ? (
@@ -92,7 +93,7 @@ const CategoryClientSuspense: React.FC<CategoryClientProps> = ({
                 )}
               </div>
               <div className="text-sm w-[50px] truncate">{category.title}</div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

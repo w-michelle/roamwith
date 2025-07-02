@@ -4,11 +4,12 @@ import { SafeListing } from "@/types";
 import axios from "axios";
 
 import { useRouter } from "next/navigation";
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import toast from "react-hot-toast";
 
 import Listing from "./Listing";
 import { useModal } from "@/app/hooks/useModal";
+import Loading from "@/app/loading";
 
 interface AllListingProps {
   listings: SafeListing[];
@@ -41,8 +42,10 @@ const AllListingsSkeleton = () => {
 
 const AllListingsSuspense: React.FC<AllListingProps> = ({ listings }) => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const modal = useModal();
   const handleAddToCart = (item: any) => {
+    setLoading(true);
     axios
       .post("/api/cart/addToCart", item)
       .then(() => {
@@ -52,6 +55,9 @@ const AllListingsSuspense: React.FC<AllListingProps> = ({ listings }) => {
       })
       .catch((error: any) => {
         toast.error("Something went wrong");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -66,7 +72,13 @@ const AllListingsSuspense: React.FC<AllListingProps> = ({ listings }) => {
         toast.error("Something went wrong");
       });
   };
-
+  if (loading) {
+    return (
+      <div className="opacity-50 bg-neutral-400 w-full h-screen absolute top-0 left-0">
+        <Loading />
+      </div>
+    );
+  }
   return (
     <div className="flex justify-center sm:justify-start gap-4 flex-wrap">
       {listings.map((listing) => (

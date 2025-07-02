@@ -329,6 +329,15 @@ const ItineraryContent: React.FC<ItinProps> = ({
     }
   };
 
+  //clean up
+  useEffect(() => {
+    return () => {
+      updateContainer.cancel?.();
+      updateDiffContainer.cancel?.();
+      updateDiffContainer.cancel?.();
+    };
+  }, [updateContainer, updateDiffContainer, updateSameContainer]);
+
   if (updating) {
     return (
       <>
