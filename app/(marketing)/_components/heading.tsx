@@ -14,9 +14,6 @@ export const Heading = ({ user }: any) => {
       <h1 className="text-4xl font-bold">
         Plan, Sort & Bookmark Your Next Trip.
       </h1>
-      <h1 className="text-2xl font-bold">
-        Welcome to <span>ROAM WITH_</span>
-      </h1>
 
       {user?.email ? (
         <Link href={"/main"}>
