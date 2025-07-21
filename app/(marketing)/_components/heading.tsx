@@ -11,7 +11,7 @@ export const Heading = ({ user }: any) => {
 
   return (
     <div className="max-w-3xl space-y-4 flex flex-col items-center">
-      <h1 className="text-4xl font-bold">
+      <h1 className="text-4xl font-bold mb-8">
         Plan, Sort & Bookmark Your Next Trip.
       </h1>
 

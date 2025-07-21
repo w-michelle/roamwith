@@ -19,7 +19,7 @@ export default async function Landing() {
             src="/hero.png"
             alt="travelling graphic"
             fill
-            className="object-cover"
+            className="object-contain"
           />
         </div>
       </div>
