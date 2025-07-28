@@ -23,7 +23,11 @@ const CardContent: React.FC<CardContentProps> = ({ card }) => {
         </div>
         <div className=" relative w-[100px] h-[100px]">
           <Image
-            src={card.listing.images[0].url || "/imgplaceholder.png"}
+            src={
+              card.listing.images[0]
+                ? card.listing.images[0].url
+                : "/imgplaceholder.png"
+            }
             alt="List Item Image"
             fill
             className="object-cover"

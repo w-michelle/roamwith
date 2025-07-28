@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import CategorySelectionBar from "../category/CategorySelectionBar";
 import { useModal } from "@/app/hooks/useModal";
+import Loader from "../Loader";
 enum STEPS {
   CATEGORY = 0,
   DESCRIPTION = 1,
@@ -193,9 +194,15 @@ const ListingModal: React.FC<ListingModalProps> = ({ categories }) => {
   if (modal.openModal !== "listing") {
     return null;
   }
+
   return (
     <div className="flex items-center justify-center fixed inset-0 bg-neutral-800/70 z-10">
       <div className="relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 my-6 mx-auto">
+        {isLoading && (
+          <div className="absolute top-0 left-0 z-[20] flex items-center justify-center w-full">
+            <Loader />
+          </div>
+        )}
         <div>
           <div className="translate h-full lg:h-auto md:h-auto border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
             <div className="flex items-center p-6 rounded-t justify-center relative border-b-[1px]">

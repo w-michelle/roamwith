@@ -9,8 +9,8 @@ export default async function Landing() {
   const session = await getServerSession();
 
   return (
-    <div className=" h-full flex flex-col ">
-      <div className="relative flex-1 flex flex-col items-center text-center gap-y-8 px-6 ">
+    <div className="h-full flex flex-col ">
+      <div className=" flex-1 flex flex-col items-center text-center gap-y-8 px-6 ">
         <Heading user={session?.user} />
       </div>
 
