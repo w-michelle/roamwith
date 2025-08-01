@@ -188,7 +188,11 @@ const CategoryModal = () => {
     return null;
   }
   return (
-    <div className="flex items-center justify-center fixed inset-0 bg-neutral-800/70 z-50">
+    <div
+      role="dialog"
+      aria-modal="true"
+      className="flex items-center justify-center fixed inset-0 bg-neutral-800/70 z-50"
+    >
       <div className="relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 my-6 mx-auto ">
         <div>
           <div className="translate h-auto lg:h-auto md:h-auto border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
@@ -215,18 +219,19 @@ const CategoryModal = () => {
               />
               <div className="mt-9 grid place-items-center grid-cols-3 md:grid-cols-4 gap-3 max-h-[50vh] overflow-y-auto">
                 <div className="col-span-1">
-                  <div
+                  <button
                     onClick={() => selectGradient(gradient)}
                     className={`${
                       clickedGrad
                         ? "border-black border-2"
                         : "border-neutral-300 border-[1px]"
                     } rounded-xl flex items-center hover:border-black cursor-pointer p-3`}
+                    aria-label="Random gradient icon"
                   >
                     <div
                       className={`w-7 h-7 bg-gradient-to-tl from-red-500 to-teal-700`}
                     ></div>
-                  </div>
+                  </button>
                 </div>
 
                 {categoryIcons.map((item, index) => (
@@ -234,16 +239,17 @@ const CategoryModal = () => {
                     key={index}
                     className="col-span-1"
                   >
-                    <div
+                    <button
                       onClick={() => setValue("icon", item.name)}
                       className={`${
                         icon === item.name
                           ? "border-black border-2"
                           : "border-neutral-300 border-[1px]"
                       } rounded-xl flex items-center hover:border-black cursor-pointer p-3`}
+                      aria-label={`${item.name.substring(2)} icon`}
                     >
                       <item.icon size={30} />
-                    </div>
+                    </button>
                   </div>
                 ))}
               </div>

@@ -64,18 +64,20 @@ const CategoryClientSuspense: React.FC<CategoryClientProps> = ({
   return (
     <div>
       <div className="flex gap-4 overflow-x-auto pb-2">
-        <div
+        <button
           onClick={() => modal.onOpen("category")}
+          aria-label="Add new category"
           className="cursor-pointer rounded-lg p-3 border-[1px] border-black w-[50px] h-[50px] flex items-center justify-center"
         >
           <IoIosAdd size={25} />
-        </div>
+        </button>
         <div className="flex gap-4">
           {categories?.map((category) => (
             <Link
               key={category.id}
               href={`/category/${category.id}`}
               className="text-center relative"
+              aria-label={`Category: ${category.title}`}
             >
               <div className="cursor-pointer rounded-lg p-3 border-[1px] border-black w-[50px] h-[50px] flex items-center justify-center">
                 {category.icon.includes("custom") ? (

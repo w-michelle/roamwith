@@ -20,12 +20,13 @@ const Main: React.FC<MainProp> = ({ listings, categories }) => {
   return (
     <div className=" w-full">
       <div className="flex flex-col items-center sm:items-start sm:flex-row gap-4 w-full">
-        <div
+        <button
           onClick={() => modal.onOpen("listing")}
+          aria-label="Add new listing"
           className="hover:border-black hover:text-black text-neutral-500 hover:cursor-pointer min-w-[150px] h-[150px] border-2 border-neutral-200  rounded-xl shadow-md flex items-center justify-center"
         >
           <IoMdAdd size={28} />
-        </div>
+        </button>
         <AllListings listings={listings} />
       </div>
 

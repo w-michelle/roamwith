@@ -77,7 +77,11 @@ const RegisterModal = () => {
     return null;
   }
   return (
-    <div className="absolute flex items-center justify-center inset-0 bg-neutral-800/70 z-10">
+    <div
+      role="dialog"
+      aria-modal="true"
+      className="absolute flex items-center justify-center inset-0 bg-neutral-800/70 z-10"
+    >
       <div className="relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 my-6 mx-auto h-full lg:h-auto md:h-auto">
         <div
           className={`translate duration-300 h-full ${

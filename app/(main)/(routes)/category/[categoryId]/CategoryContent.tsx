@@ -98,12 +98,13 @@ const CategoryContent: React.FC<CategoryClientProps> = ({
       </div>
       {/* listings */}
       <div className="">
-        <div
+        <button
           onClick={() => modal.onOpen("listing")}
+          aria-label="Add new listing"
           className="my-6 hover:bg-neutral-400 hover:text-white hover:cursor-pointer w-[100px] h-[100px] border-2 border-neutral-200  rounded-xl shadow-md flex items-center justify-center"
         >
           <IoMdAdd size={28} />
-        </div>
+        </button>
         {listings?.length === 0 && (
           <div>
             <EmptyState title="No listings yet" />

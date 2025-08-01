@@ -32,17 +32,19 @@ const CategorySelectionBar: React.FC<CategorySelectionBarProps> = ({
   return (
     <div>
       <div className="flex gap-4 overflow-x-auto pb-2">
-        <div
+        <button
           onClick={() => modal.onOpen("category")}
+          aria-label="Add new category"
           className="cursor-pointer rounded-lg p-3 border-[2px] border-neutral-400 w-[50px] h-[50px] flex items-center justify-center"
         >
           <IoIosAdd size={25} />
-        </div>
+        </button>
         {categories?.map((category) => (
           <div
             onClick={() => onClick(category.id)}
             key={category.id}
             className="text-center relative"
+            aria-label={`Category: ${category.title}`}
           >
             <div
               className={`cursor-pointer rounded-lg p-3 border-[2px] ${

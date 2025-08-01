@@ -26,7 +26,7 @@ const Listing: React.FC<ListingProp> = ({
     setToggleMini(false);
   };
   return (
-    <>
+    <article>
       <div
         onClick={() => setToggleMini(!toggleMini)}
         className="hover:cursor-pointer w-full flex justify-end mb-2"
@@ -52,23 +52,23 @@ const Listing: React.FC<ListingProp> = ({
       {toggleMini === true && (
         <div className="absolute top-9 right-[-50px] z-10">
           <div className="rounded-md bg-white flex flex-col gap-2 p-2 text-xs items-center shadow-md">
-            <div
+            <button
               onClick={() => handleAdd(listing)}
               className="hover:cursor-pointer hover:bg-neutral-300/30 py-1 px-3 w-full"
             >
               ADD TO BUCKET
-            </div>
+            </button>
 
-            <div
+            <button
               onClick={() => handleDelete(listing.id)}
               className="hover:cursor-pointer hover:bg-neutral-300/30 py-1 px-3 w-full"
             >
               DELETE
-            </div>
+            </button>
           </div>
         </div>
       )}
-    </>
+    </article>
   );
 };
 
