@@ -66,7 +66,6 @@ const ListingModal: React.FC<ListingModalProps> = ({ categories }) => {
   const removePreviewImage = (imgname: string) => {
     const newList = images.filter((item: any) => item.name !== imgname);
     setImages(newList);
-
     setCustomValue("images", newList);
   };
 
@@ -157,8 +156,8 @@ const ListingModal: React.FC<ListingModalProps> = ({ categories }) => {
           <div>
             <p className="text-neutral-600 text-center mb-4">Preview</p>
             <div className="p-3 grid grid-cols-4 gap-4  max-h-[450px] overflow-y-auto">
-              {images?.map((file: any, index: any) => (
-                <div key={index}>
+              {images?.map((file: any) => (
+                <div key={`${file.name}-${file.lastModified}`}>
                   <ImagePreview
                     image={file}
                     onClick={(name: string) => removePreviewImage(name)}
