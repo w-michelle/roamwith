@@ -47,7 +47,11 @@ const EditModal: React.FC<EditModalProp> = ({ listing, categories }) => {
     setValue("title", listing.title);
     setValue("description", listing.description || "");
     setValue("categoryId", listing.category);
-    const imagesUrls = listing.images.map((img) => img.url);
+    const imagesUrls = listing.images.map((img) => ({
+      url: img.url,
+      id: img.id,
+    }));
+    console.log("imageUrls", imagesUrls);
     setExistingImgs(imagesUrls);
   }, [listing]);
 
@@ -175,14 +179,14 @@ const EditModal: React.FC<EditModalProp> = ({ listing, categories }) => {
               Add More
             </button>
             <div className="flex">
-              {existingImgs.map((img: string, index: any) => (
+              {existingImgs.map((img: any) => (
                 <div
-                  key={index}
+                  key={img.id}
                   className="relative border-[1px] rounded-lg object-cover"
                 >
                   <Image
                     className="object-cover"
-                    src={img}
+                    src={img.url}
                     alt="Listing Image"
                     width={100}
                     height={100}
@@ -199,7 +203,7 @@ const EditModal: React.FC<EditModalProp> = ({ listing, categories }) => {
               {images?.map((file: any, index: any) => (
                 <ImagePreview
                   image={file}
-                  key={index}
+                  key={`${file.name}-${file.lastModified}`}
                   onClick={(name: string) => removePreviewImage(name)}
                 />
               ))}
