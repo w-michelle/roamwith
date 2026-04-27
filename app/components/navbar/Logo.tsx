@@ -9,9 +9,9 @@ const Logo = () => {
       <Image
         alt="Logo"
         className="cursor-pointer"
-        height="80"
-        width="80"
-        src="/roam.png"
+        height="100"
+        width="100"
+        src="/rwLogo.png"
         priority={true}
       />
     </Link>

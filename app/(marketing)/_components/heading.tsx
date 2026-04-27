@@ -33,6 +33,7 @@ export const Heading = ({ user }: any) => {
             Get RoamWith Free
             <FaLongArrowAltRight />
           </button>
+          {/* tester log in */}
           <Auth />
         </div>
       )}

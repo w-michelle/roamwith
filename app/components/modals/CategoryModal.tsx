@@ -18,6 +18,8 @@ import {
   PiFlowerLotus,
   PiMountains,
   PiTent,
+  PiPizza,
+  PiIceCream,
 } from "react-icons/pi";
 import { RiBearSmileLine, RiCupLine } from "react-icons/ri";
 import { TiHeartOutline } from "react-icons/ti";
@@ -120,6 +122,14 @@ export const categoryIcons = [
     name: "LuFeather",
     icon: LuFeather,
   },
+  {
+    name: "PiPizza",
+    icon: PiPizza,
+  },
+  {
+    name: "PiIceCream",
+    icon: PiIceCream,
+  },
 ];
 
 const CategoryModal = () => {
@@ -144,21 +154,32 @@ const CategoryModal = () => {
 
   const icon = watch("icon");
 
-  const colorOne = ["lime", "green", "mediumblue", "teal", "dimgray", "indigo"];
-  const colorTwo = [
-    "violet",
-    "red",
-    "orange",
-    "yellow",
-    "purple",
-    "fuchsia",
-    "pink",
-  ];
+  const generateCatGradient = () => {
+    const colorOne = [
+      "lime",
+      "green",
+      "mediumblue",
+      "teal",
+      "dimgray",
+      "indigo",
+    ];
+    const colorTwo = [
+      "violet",
+      "red",
+      "orange",
+      "yellow",
+      "purple",
+      "fuchsia",
+      "pink",
+    ];
 
-  const randomIndex = Math.floor(Math.random() * 7);
+    const randomIndex = Math.floor(Math.random() * 7);
+    const randomIndex2 = Math.floor(Math.random() * 7);
 
-  const gradientColorOne = `${colorOne[randomIndex]}`;
-  const gradientColorTwo = `${colorTwo[randomIndex]}`;
+    const gradientColorOne = `${colorOne[randomIndex]}`;
+    const gradientColorTwo = `${colorTwo[randomIndex2]}`;
+    return `custom ${gradientColorOne} ${gradientColorTwo}`;
+  };
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
@@ -179,7 +200,7 @@ const CategoryModal = () => {
         setIsLoading(false);
       });
   };
-  const gradient = `custom ${gradientColorOne} ${gradientColorTwo}`;
+  const gradient = generateCatGradient();
   const selectGradient = (item: any) => {
     setValue("icon", item);
     setClickedGrad(!clickedGrad);
@@ -220,6 +241,7 @@ const CategoryModal = () => {
               <div className="mt-9 grid place-items-center grid-cols-3 md:grid-cols-4 gap-3 max-h-[50vh] overflow-y-auto">
                 <div className="col-span-1">
                   <button
+                    type="button"
                     onClick={() => selectGradient(gradient)}
                     className={`${
                       clickedGrad
@@ -240,6 +262,7 @@ const CategoryModal = () => {
                     className="col-span-1"
                   >
                     <button
+                      type="button"
                       onClick={() => setValue("icon", item.name)}
                       className={`${
                         icon === item.name

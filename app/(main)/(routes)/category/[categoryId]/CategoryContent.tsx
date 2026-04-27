@@ -54,7 +54,7 @@ const CategoryContent: React.FC<CategoryClientProps> = ({
       .then(() => {
         toast.success("Removed Category");
 
-        router.push("/");
+        router.push("/main");
         router.refresh();
       })
       .catch((error: any) => {
@@ -83,7 +83,7 @@ const CategoryContent: React.FC<CategoryClientProps> = ({
               style={{
                 backgroundImage: `${gradientIcon(
                   currentCategory.icon.split(" ")[1],
-                  currentCategory.icon.split(" ")[2]
+                  currentCategory.icon.split(" ")[2],
                 )}`,
               }}
             ></div>

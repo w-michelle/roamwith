@@ -10,8 +10,21 @@ export default async function Landing() {
 
   return (
     <div className="h-full flex flex-col ">
-      <div className=" flex-1 flex flex-col items-center text-center gap-y-8 px-6 ">
+      <div className=" flex-1 flex flex-col items-center text-center gap-y-8 p-6 ">
         <Heading user={session?.user} />
+        <div className=" flex items-center justify-center">
+          <video
+            className="w-3/4 md:w-2/3 bg-white rounded-2xl shadow-md drop-shadow-2xl p-6"
+            autoPlay
+            muted
+            loop
+          >
+            <source
+              src="/demo.mp4"
+              type="video/mp4"
+            />
+          </video>
+        </div>
       </div>
 
       <LoginModal />

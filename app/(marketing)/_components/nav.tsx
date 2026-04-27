@@ -15,14 +15,16 @@ const Nav: React.FC<NavProps> = ({ currentUser }) => {
   const modal = useModal();
 
   return (
-    <div className="flex justify-between items-center py-2 px-2">
-      <Logo />
+    <div className="flex justify-between items-center ">
+      <div className="m-4">
+        <Logo />
+      </div>
 
-      <div className="flex items-end gap-4">
+      <div className="flex items-end gap-4 mr-4">
         {!currentUser ? (
           <div>
             <button
-              className="flex text-sm items-center gap-2 bg-black text-white hover:bg-black/80 py-3 px-4 rounded-md hover:cursor-pointer"
+              className="flex text-sm items-center gap-2 bg-black text-white hover:bg-black/80 py-3 px-4 mx-6 rounded-md hover:cursor-pointer"
               onClick={() => modal.onOpen("login")}
             >
               Login

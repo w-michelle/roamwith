@@ -55,7 +55,6 @@ const AuthSuspense = () => {
       {loading && (
         <div className="absolute top-0 left-0 h-screen flex items-center justify-center w-full bg-white opacity-95">
           <Loader />
-          <p className="absolute bg-transparent">Loading...</p>
         </div>
       )}
     </div>
